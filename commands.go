@@ -3,8 +3,8 @@ package main
 import (
 	"os"
 
-	"ukcloud-portal-cli/command"
 	"github.com/mitchellh/cli"
+	"ukcloud-portal-cli/command"
 )
 
 // Commands is the mapping of all the available commands.
@@ -30,10 +30,10 @@ func init() {
 	}
 
 	meta := command.Meta{
-		Color:       true,
-		Ui:          Ui,
+		Color: true,
+		Ui:    Ui,
 	}
-	
+
 	// The command list is included in the ukc -help
 	// output
 
@@ -45,7 +45,7 @@ func init() {
 	Commands = map[string]cli.CommandFactory{
 		"accounts": func() (cli.Command, error) {
 			return &command.AccountsCommand{
-				Meta:       meta,
+				Meta: meta,
 			}, nil
 		},
 	}

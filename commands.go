@@ -14,19 +14,10 @@ var PlumbingCommands map[string]struct{}
 // Ui is the cli.Ui used for communicating to the outside world.
 var Ui cli.Ui
 
-const (
-	ErrorPrefix  = "e:"
-	OutputPrefix = "o:"
-)
-
 func init() {
 
-	Ui = &cli.PrefixedUi{
-		AskPrefix:    OutputPrefix,
-		OutputPrefix: OutputPrefix,
-		InfoPrefix:   OutputPrefix,
-		ErrorPrefix:  ErrorPrefix,
-		Ui:           &cli.BasicUi{Writer: os.Stdout},
+	Ui = &cli.ColoredUi{
+		Ui: &cli.BasicUi{Writer: os.Stdout},
 	}
 
 	meta := command.Meta{

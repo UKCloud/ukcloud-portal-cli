@@ -1,7 +1,7 @@
 package command
 
 import (
-	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -40,7 +40,12 @@ func (c *AccountsCommand) Run(args []string) int {
 	var accounts []Accounts
 
 	getJson("https://portal.skyscapecloud.com/api/accounts.json", &accounts)
-	fmt.Println(accounts)
+
+	c.Ui.Output("ID\t| Account Name")
+	c.Ui.Output("----------------------------------------------------------")
+	for _, account := range accounts {
+		c.Ui.Output(strconv.Itoa(account.Id) + "\t| " + account.Name)
+	}
 
 	return 0
 }

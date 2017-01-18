@@ -31,14 +31,11 @@ func auth(email string, password string) int {
 
 	var jsonStr = []byte(`{"email": "` + email + ` ", "password": "` + password + `"}`)
 
-	log.Println(email)
-	log.Println(password)
 	url := "https://portal.skyscapecloud.com/api/authenticate.json"
 	req, err := http.NewRequest("POST", url, bytes.NewBuffer(jsonStr))
 
 	r, err := myClient.Do(req)
 
-	log.Println(r.StatusCode)
 	if r.StatusCode != 201 {
 		return 1
 	}

@@ -52,13 +52,13 @@ Usage: ukc accounts [options] [path]
   Lists the UKCloud Accounts
 
 Options:
+  -email           Email to your UKCloud Portal Account
 
- 
-
+  -password        Password to your UKCloud Portal Acccount
 `
 	return strings.TrimSpace(helpText)
 }
 
 func (c *AccountsCommand) Synopsis() string {
-	return "List the Accounts"
+	return "List the Accounts in your UKCloud Portal"
 }

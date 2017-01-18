@@ -48,5 +48,14 @@ func init() {
 				Meta: meta,
 			}, nil
 		},
+
+		"version": func() (cli.Command, error) {
+			return &command.VersionCommand{
+				Meta:              meta,
+				Revision:          GitCommit,
+				Version:           Version,
+				VersionPrerelease: VersionPrerelease,
+			}, nil
+		},
 	}
 }

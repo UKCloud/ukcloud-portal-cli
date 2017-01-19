@@ -9,7 +9,7 @@ dev: fmtcheck
 	@UKC_DEV=1 sh -c "'$(CURDIR)/scripts/build.sh'"
 
 # test runs the test suite and vets the code
-test: fmtcheck
+test: get fmtcheck
 	go list $(TEST) | xargs -n1 go test -timeout=60s -parallel=10 $(TESTARGS)
 
 # testrace runs the race checker
@@ -26,6 +26,9 @@ vet:
 		echo "and fix them if necessary before submitting the code for review."; \
 		exit 1; \
 	fi
+
+get:
+	go get $(TEST)
 
 fmt:
 	gofmt -w $(GOFMT_FILES)

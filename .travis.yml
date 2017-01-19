@@ -1,25 +1,19 @@
 sudo: false
-
 language: go
-
 go:
-  - 1.6
-  - 1.7
-  - 1.7.1
-  - tip
-
+- 1.6
+- 1.7
+- 1.7.1
+- tip
 script: make dist
-
 matrix:
   allow_failures:
-    - go: tip
-
+  - go: tip
 deploy:
-  skip_cleanup: true
   provider: releases
   api_key:
-    secure: u4P/EosurXSWkdMP9UYk57nc1pP8KAn/a3Au+bImBY0CyvN8AVR2gpoSc8zf5yp0CjkdkkzlUzxK1DtEi8Gj06Oyb6iXeZBIA6Zc1xLD8LSIz+D6TYkjZUgL0TB9Dbwtt7M1VZEOtb3L5X/+vhOBzwrt8N54RKeo28Wdow1WbBnPI6f+pjCdG6WuVE903SUM0BCxrZpvfuRa0AbdSi6+vBaw+WBMg9fYfzbmGnNDBpqu8ohst1k6op8csJ+/1I6a3EIkJ/KHmhxeyQ15MaaQ4vOZCIzYsV3NgqKfwOPK8AwVj+AwJTN9yhowAh4S6jdNYInLJMS11cD3ZnNEQ8qwHCVixFLKA1lAZj4aadu5w5b9P2e0sDvwvNbQQh9SH1vgTZOi6o0zCvQA97NpzDV3KjyjjTyTQ+n9nninuZo64eQw6g/fRXx3fYc7QqIgNfFQHYusQVX2qFb8pBq6SIR9LA8eDAGw35vej/BFsW7vyGMykUrN5PicdadFEZvfr/JRc5eIAxEBzM7s57DE04xR75KWIVwfBplrLVLnqCgdJslUCIEm15sDAZ6br4/D03KasYDP9KSW099YzWkUYTIWNp+Vw5sfOGPHl/HVLO5i2hPpUGHib5xInFQvk6es/3GqGydN+mwhCAmQ51TF89LEUsPucBxTm1yV+PCxQU0vdcA=
-  file:
+    secure: LQXtXY77kAFzZJaRIdf1LJzQ0pt0zcUJ6KZSbRhULWCBYr8M++Arf2x/5E6HEmqGeALc56uLCLZc7+M+3Taon5Fq3A2DJ+k6aI719hP0gOYrgEtisUU43zzp0VeSeUWfhA3oOv75uzmG7MuDdYAVmG1OrK1n4LNraf6DmKyG62NoViXEauS5LW4NY2jheWbn3JddKuZi/Ky+OWMugtdZ5D8RBbx721tg/veIwGR1feZ4O1zRAmFkT1bXb97TbALmSlougEpc4abiRaeknJinhXfeicGFAAfyeFqbtyzcbZ2fDEOaIbdKR4eTkFB5lVL16sl6xYdL3mPgM6ZTyfQBF4PNFQ/SPZMnydCySd54rsaUhy931xGRR+EgSiDnneWwwallry0Vdk+JJI2dOfrJ6KfN6epc7vsGJ9ODp4PQjqDljGmiQ2wwYPMValBRRpfmM9lHqoL14N0aazAJBQNoWaI4qMaHpmTfql+A00IMgNG67UqJ5GggyKnFaWsGUF3cUIDClMqOA2TzdozJyqp3/AlMqCNM1D91Lvx3UGxYrBt9OcTdNh3yHc5A5s3J9xlShjH8JSp6WOd3GN1uRZHwIEsXR0tXxZBPVFL4kqOU866fMhckpiP6T3vmmOtMr7fnmJ4V3R5WKAsilD1wQQy+rsGyVpaRdy/L/9g6tHpTVdE=
+  file: 
   - pkg/darwin_amd64.zip
   on:
     tags: true

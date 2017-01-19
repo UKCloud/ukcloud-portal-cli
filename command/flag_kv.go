@@ -14,6 +14,7 @@ func (v *FlagStringKV) String() string {
 	return ""
 }
 
+// Set is for setting the k/v store
 func (v *FlagStringKV) Set(raw string) error {
 	idx := strings.Index(raw, "=")
 	if idx == -1 {
@@ -36,6 +37,8 @@ type FlagStringSlice []string
 func (v *FlagStringSlice) String() string {
 	return ""
 }
+
+// Set is for appending an item to the k/v store
 func (v *FlagStringSlice) Set(raw string) error {
 	*v = append(*v, raw)
 

@@ -3,18 +3,21 @@ GOFMT_FILES?=$$(find . -name '*.go' | grep -v vendor)
 
 default: test vet
 
+
 # dev creates binaries for testing Terraform locally. These are put
 # into ./bin/ as well as $GOPATH/bin
-dev: fmtcheck 
+dev: get-deps fmtcheck 
 	@UKC_DEV=1 sh -c "'$(CURDIR)/scripts/build.sh'"
 
 # test runs the test suite and vets the code
-test: get fmtcheck
-	go list $(TEST) | xargs -n1 go test -timeout=60s -parallel=10 $(TESTARGS)
+test: get-deps fmtcheck
+	@golint ./...
+	@echo "==> Running Tests"
+	@go list $(TEST) | xargs -n1 go test -timeout=60s -parallel=10 $(TESTARGS)
 
 # testrace runs the race checker
 testrace:
-	go list $(TEST) | xargs -n1 go test -race $(TESTARGS)
+	@go list $(TEST) | xargs -n1 go test -race $(TESTARGS)
 
 # vet runs the Go source code static analysis tool `vet` to find
 # any common errors.
@@ -27,8 +30,11 @@ vet:
 		exit 1; \
 	fi
 
-get:
-	go get $(TEST)
+get-deps:
+	@echo "==> Fetching dependencies"
+	@go get -v $(TEST)
+	@go get -u github.com/golang/lint/golint
+	
 
 fmt:
 	gofmt -w $(GOFMT_FILES)

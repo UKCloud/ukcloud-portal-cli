@@ -14,7 +14,7 @@ import (
 // Meta are the meta-options that are available on all or most commands.
 type Meta struct {
 	Color bool
-	Ui    cli.Ui
+	UI    cli.Ui
 
 	// Variables for the context (private)
 	autoKey       string
@@ -25,7 +25,7 @@ type Meta struct {
 	// Targets for this context (private)
 	targets []string
 
-	oldUi cli.Ui
+	oldUI cli.Ui
 	color bool
 
 	shadow   bool
@@ -59,7 +59,7 @@ func (m *Meta) flagSet(n string) *flag.FlagSet {
 	errScanner := bufio.NewScanner(errR)
 	go func() {
 		for errScanner.Scan() {
-			m.Ui.Error(errScanner.Text())
+			m.UI.Error(errScanner.Text())
 		}
 	}()
 	f.SetOutput(errW)
@@ -78,8 +78,8 @@ func (m *Meta) flagSet(n string) *flag.FlagSet {
 func (m *Meta) process(args []string, vars bool) []string {
 	// We do this so that we retain the ability to technically call
 	// process multiple times, even if we have no plans to do so
-	if m.oldUi != nil {
-		m.Ui = m.oldUi
+	if m.oldUI != nil {
+		m.UI = m.oldUI
 	}
 
 	// Set colorization

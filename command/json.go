@@ -11,6 +11,7 @@ import (
 	"time"
 )
 
+// CookiesCollection is a collection of the cookies returned from Auth
 type CookiesCollection struct {
 	Collection []*http.Cookie
 }
@@ -44,11 +45,12 @@ func auth(email string, password string) int {
 	return 0
 }
 
-func getJson(myUrl string, target interface{}) error {
+// getJSON calls the API and returns the JSON
+func getJSON(myURL string, target interface{}) error {
 
 	jar, _ := cookiejar.New(nil)
 
-	u, err := url.Parse(myUrl)
+	u, err := url.Parse(myURL)
 	jar.SetCookies(u, cookieCollection.Collection)
 
 	tr := &http.Transport{
@@ -57,7 +59,7 @@ func getJson(myUrl string, target interface{}) error {
 
 	myClient := http.Client{Jar: jar, Timeout: 100 * time.Second, Transport: tr}
 
-	r, err := myClient.Get(myUrl)
+	r, err := myClient.Get(myURL)
 	if err != nil {
 		return err
 	}

@@ -6,10 +6,10 @@ import (
 	"github.com/hashicorp/go-version"
 )
 
-// The main version number that is being run at the moment.
+// Version is main version number that is being run at the moment.
 const Version = "0.0.2"
 
-// A pre-release marker for the version. If this is "" (empty string)
+// VersionPrerelease marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release
 // such as "dev" (in development), "beta", "rc1", etc.
 const VersionPrerelease = "dev"
@@ -23,6 +23,7 @@ var SemVersion = version.Must(version.NewVersion(Version))
 // in http requests.
 const VersionHeader = "UKC-Version"
 
+// VersionString is the utlimate output
 func VersionString() string {
 	if VersionPrerelease != "" {
 		return fmt.Sprintf("%s-%s", Version, VersionPrerelease)

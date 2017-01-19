@@ -2,8 +2,11 @@ package main
 
 import "github.com/ukcloud/ukcloud-portal-cli/ukc"
 
-// The git commit that was compiled. This will be filled in by the compiler.
+// GitCommit is the git commit that was compiled. This will be filled in by the compiler.
 var GitCommit string
 
+// Version is the actual version
 const Version = ukc.Version
+
+// VersionPrerelease indicates if dev or not
 const VersionPrerelease = ukc.VersionPrerelease

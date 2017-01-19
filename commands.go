@@ -9,20 +9,22 @@ import (
 
 // Commands is the mapping of all the available commands.
 var Commands map[string]cli.CommandFactory
+
+// PlumbingCommands is foe the state & Debug
 var PlumbingCommands map[string]struct{}
 
-// Ui is the cli.Ui used for communicating to the outside world.
-var Ui cli.Ui
+// UI is the cli.Ui used for communicating to the outside world.
+var UI cli.Ui
 
 func init() {
 
-	Ui = &cli.ColoredUi{
+	UI = &cli.ColoredUi{
 		Ui: &cli.BasicUi{Writer: os.Stdout},
 	}
 
 	meta := command.Meta{
 		Color: true,
-		Ui:    Ui,
+		UI:    UI,
 	}
 
 	// The command list is included in the ukc -help

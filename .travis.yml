@@ -15,6 +15,17 @@ deploy:
     secure: LQXtXY77kAFzZJaRIdf1LJzQ0pt0zcUJ6KZSbRhULWCBYr8M++Arf2x/5E6HEmqGeALc56uLCLZc7+M+3Taon5Fq3A2DJ+k6aI719hP0gOYrgEtisUU43zzp0VeSeUWfhA3oOv75uzmG7MuDdYAVmG1OrK1n4LNraf6DmKyG62NoViXEauS5LW4NY2jheWbn3JddKuZi/Ky+OWMugtdZ5D8RBbx721tg/veIwGR1feZ4O1zRAmFkT1bXb97TbALmSlougEpc4abiRaeknJinhXfeicGFAAfyeFqbtyzcbZ2fDEOaIbdKR4eTkFB5lVL16sl6xYdL3mPgM6ZTyfQBF4PNFQ/SPZMnydCySd54rsaUhy931xGRR+EgSiDnneWwwallry0Vdk+JJI2dOfrJ6KfN6epc7vsGJ9ODp4PQjqDljGmiQ2wwYPMValBRRpfmM9lHqoL14N0aazAJBQNoWaI4qMaHpmTfql+A00IMgNG67UqJ5GggyKnFaWsGUF3cUIDClMqOA2TzdozJyqp3/AlMqCNM1D91Lvx3UGxYrBt9OcTdNh3yHc5A5s3J9xlShjH8JSp6WOd3GN1uRZHwIEsXR0tXxZBPVFL4kqOU866fMhckpiP6T3vmmOtMr7fnmJ4V3R5WKAsilD1wQQy+rsGyVpaRdy/L/9g6tHpTVdE=
   file: 
   - pkg/darwin_amd64.zip
+  - pkg/freebsd_386.zip
+  - pkg/freebsd_amd64.zip
+  - pkg/freebsd_arm.zip
+  - pkg/linux_386.zip
+  - pkg/linux_amd64.zip
+  - pkg/linux_arm.zip
+  - pkg/openbsd_386.zip
+  - pkg/openbsd_amd64.zip
+  - solaris_amd64.zip
+  - windows_386.zip
+  - windows_amd64.zip
   on:
     tags: true
 notifications:

@@ -7,7 +7,7 @@ import (
 )
 
 // Version is main version number that is being run at the moment.
-const Version = "0.0.2"
+const Version = "0.0.3"
 
 // VersionPrerelease marker for the version. If this is "" (empty string)
 // then it means that it is a final release. Otherwise, this is a pre-release

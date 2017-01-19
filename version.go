@@ -1,6 +1,6 @@
 package main
 
-import "ukcloud-portal-cli/ukc"
+import "github.com/ukcloud/ukcloud-portal-cli/ukc"
 
 // The git commit that was compiled. This will be filled in by the compiler.
 var GitCommit string

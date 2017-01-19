@@ -23,9 +23,9 @@ deploy:
   - pkg/linux_arm.zip
   - pkg/openbsd_386.zip
   - pkg/openbsd_amd64.zip
-  - solaris_amd64.zip
-  - windows_386.zip
-  - windows_amd64.zip
+  - pkg/solaris_amd64.zip
+  - pkg/windows_386.zip
+  - pkg/windows_amd64.zip
   on:
     tags: true
 notifications:

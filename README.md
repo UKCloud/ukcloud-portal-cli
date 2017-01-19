@@ -2,10 +2,9 @@
 
 This tool allows you to communicate with the UKCloud portal using the CLI. Written in Go.
 
-[![Latest Version](http://img.shields.io/github/release/UKCloud/vcd-healthcheck.svg?style=flat-square)](https://github.com/UKCloud/vcd-healthcheck/releases)
-[![Build Status](https://travis-ci.org/UKCloud/vcd-healthcheck.svg?branch=master)](https://travis-ci.org/UKCloud/vcd-healthcheck)
-[![GoDoc](https://godoc.org/github.com/UKCloud/vcd-healthcheck?status.svg)](https://godoc.org/github.com/UKCloud/vcd-healthcheck)
-[![ZenHub](https://raw.githubusercontent.com/ZenHubIO/support/master/zenhub-badge.png)](https://zenhub.com)
+[![Latest Version](http://img.shields.io/github/release/UKCloud/ukcloud-portal-cli.svg?style=flat-square)](https://github.com/UKCloud/ukcloud-portal-cli/releases)
+[![Build Status](https://api.travis-ci.org/UKCloud/ukcloud-portal-cli.svg?branch=master)](https://travis-ci.org/UKCloud/ukcloud-portal-cli)
+[![GoDoc](https://godoc.org/github.com/UKCloud/ukcloud-portal-cli?status.svg)](https://godoc.org/github.com/UKCloud/ukcloud-portal-cli)
 
 ## Installation
 Download the [latest release](https://github.com/UKCloud/ukcloud-portal-cli/releases) of the healthcheck from GitHub. Release binaries are provided for you to download for both Windows and Linux. If you require other platforms, you can retrieve the source and compile for yourself.

@@ -1,8 +1,12 @@
 package command
 
 import (
+	"fmt"
+	"github.com/ukcloud/ukcloud-portal-api/api"
+	"os"
 	"strconv"
 	"strings"
+	"text/tabwriter"
 )
 
 // AccountsCommand is the command to list UKC Accounts
@@ -10,21 +14,15 @@ type AccountsCommand struct {
 	Meta
 }
 
-// Accounts holds the JSON response
-type Accounts struct {
-	Name string
-	ID   int
-}
-
 // Run is will be executed when `ukc accounts` is called
 func (c *AccountsCommand) Run(args []string) int {
 
+	papi := new(api.API)
 	args = c.Meta.process(args, false)
 
+	// Get the flags for this)
 	cmdName := "accounts"
-
 	cmdFlags := c.Meta.flagSet(cmdName)
-
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
 
@@ -33,22 +31,30 @@ func (c *AccountsCommand) Run(args []string) int {
 		return 1
 	}
 
-	if auth(c.Meta.email, c.Meta.password) != 0 {
+	if papi.GetAuth(c.Meta.email, c.Meta.password) != 0 {
 		c.UI.Error(
 			"Sorry, we have been unable to authenticate your credentials\n",
 		)
 		return 1
 	}
 
-	var accounts []Accounts
-
-	getJSON("https://portal.skyscapecloud.com/api/accounts.json", &accounts)
-
-	c.UI.Output("ID\t| Account Name")
-	c.UI.Output("----------------------------------------------------------")
-	for _, account := range accounts {
-		c.UI.Output(strconv.Itoa(account.ID) + "\t| " + account.Name)
+	var accounts []api.Accounts
+	accounts, err := papi.GetAccounts()
+	if err != nil {
+		c.UI.Error(
+			"Sorry, there was an error fetching your accounts\n",
+		)
+		return 1
 	}
+
+	flags := tabwriter.AlignRight | tabwriter.Debug
+	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
+
+	fmt.Fprintln(w, "ID\tAccount Name\t")
+	for _, account := range accounts {
+		fmt.Fprintln(w, strconv.Itoa(account.ID)+"\t"+account.Name+"\t")
+	}
+	w.Flush()
 
 	return 0
 }

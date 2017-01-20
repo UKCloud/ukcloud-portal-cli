@@ -6,7 +6,7 @@ default: test testrace vet
 
 # dev creates binaries for testing Terraform locally. These are put
 # into ./bin/ as well as $GOPATH/bin
-dev: get-deps fmtcheck 
+dev: get-deps fmt 
 	@UKC_DEV=1 sh -c "'$(CURDIR)/scripts/build.sh'"
 
 dist: test testrace vet 

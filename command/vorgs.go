@@ -4,28 +4,28 @@ import (
 	"fmt"
 	"github.com/ukcloud/ukcloud-portal-api/api"
 	"os"
-	"strconv"
 	"strings"
 	"text/tabwriter"
 )
 
-// AccountsCommand is the command to list UKC Accounts
-type AccountsCommand struct {
+// VorgsCommand is the command to list UKC Vorgs
+type VorgsCommand struct {
 	Meta
 }
 
 // Run is will be executed when `ukc accounts` is called
-func (c *AccountsCommand) Run(args []string) int {
+func (c *VorgsCommand) Run(args []string) int {
 
 	var err error
 	papi := new(api.API)
 	args = c.Meta.process(args, false)
 
 	// Get the flags for this)
-	cmdName := "accounts"
+	cmdName := "vorgs"
 	cmdFlags := c.Meta.flagSet(cmdName)
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
+	cmdFlags.IntVar(&c.Meta.accountID, "accountid", 0, "accountid")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	if err = cmdFlags.Parse(args); err != nil {
@@ -41,21 +41,35 @@ func (c *AccountsCommand) Run(args []string) int {
 		return 1
 	}
 
-	var accounts []api.Accounts
-	accounts, err = papi.GetAccounts()
-	if err != nil {
+	var vorgs api.VorgsArray
+	vorgs, err = papi.GetVorgs(c.Meta.accountID)
+
+	if err != nil || len(vorgs.Data) <= 0 {
 		c.UI.Error(
-			"Sorry, there was an error fetching your accounts\n",
+			"Sorry, we have been unable to retrieve your Vorgs\n",
 		)
+		if err != nil && len(err.Error()) > 0 {
+			c.UI.Error(
+				err.Error() + "\n",
+			)
+		}
+
+		c.UI.Error(
+			"Possible accounts are:\n",
+		)
+
+		acc := new(AccountsCommand)
+		acc.Run(args)
+
 		return 1
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug
 	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
 
-	fmt.Fprintln(w, "ID\tAccount Name\t")
-	for _, account := range accounts {
-		fmt.Fprintln(w, strconv.Itoa(account.ID)+"\t"+account.Name+"\t")
+	fmt.Fprintln(w, "ID\tVorgs Name\t")
+	for _, vorgs := range vorgs.Data {
+		fmt.Fprintln(w, vorgs.ID+"\t"+vorgs.Attributes.Name+"\t")
 	}
 	w.Flush()
 
@@ -63,11 +77,14 @@ func (c *AccountsCommand) Run(args []string) int {
 }
 
 // Help is called when ukc accounts -help | --help | -h
-func (c *AccountsCommand) Help() string {
+func (c *VorgsCommand) Help() string {
 	helpText := `
-Usage: ukc accounts [options] [path]
+Usage: ukc vorgs [options] [path]
 
   ` + c.Synopsis() + `
+
+Required:
+  -accountid       Your UKCloud AccountID
 
 Options:
   -email           Email to your UKCloud Portal Account
@@ -78,6 +95,6 @@ Options:
 }
 
 // Synopsis is used when listing all commands or in the help
-func (c *AccountsCommand) Synopsis() string {
-	return "List the Accounts in your UKCloud Portal"
+func (c *VorgsCommand) Synopsis() string {
+	return "List the Vorgs in your UKCloud Portal"
 }

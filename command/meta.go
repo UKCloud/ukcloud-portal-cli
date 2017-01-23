@@ -28,9 +28,11 @@ type Meta struct {
 	oldUI cli.Ui
 	color bool
 
-	shadow   bool
-	email    string
-	password string
+	shadow    bool
+	email     string
+	password  string
+	accountID int
+	vOrgID    int
 }
 
 // flags adds the meta flags to the given FlagSet.

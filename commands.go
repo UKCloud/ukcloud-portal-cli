@@ -42,6 +42,18 @@ func init() {
 			}, nil
 		},
 
+		"vdcs": func() (cli.Command, error) {
+			return &command.VdcCommand{
+				Meta: meta,
+			}, nil
+		},
+
+		"vorgs": func() (cli.Command, error) {
+			return &command.VorgsCommand{
+				Meta: meta,
+			}, nil
+		},
+
 		"version": func() (cli.Command, error) {
 			return &command.VersionCommand{
 				Meta:              meta,

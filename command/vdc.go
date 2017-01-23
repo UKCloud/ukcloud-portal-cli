@@ -4,28 +4,29 @@ import (
 	"fmt"
 	"github.com/ukcloud/ukcloud-portal-api/api"
 	"os"
-	"strconv"
 	"strings"
 	"text/tabwriter"
 )
 
-// AccountsCommand is the command to list UKC Accounts
-type AccountsCommand struct {
+// VdcCommand is the command to list UKC Vdcs
+type VdcCommand struct {
 	Meta
 }
 
 // Run is will be executed when `ukc accounts` is called
-func (c *AccountsCommand) Run(args []string) int {
+func (c *VdcCommand) Run(args []string) int {
 
 	var err error
 	papi := new(api.API)
 	args = c.Meta.process(args, false)
 
 	// Get the flags for this)
-	cmdName := "accounts"
+	cmdName := "vdcs"
 	cmdFlags := c.Meta.flagSet(cmdName)
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
+	cmdFlags.IntVar(&c.Meta.accountID, "accountid", 0, "accountid")
+	cmdFlags.IntVar(&c.Meta.vOrgID, "vorgid", 0, "vorgid")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	if err = cmdFlags.Parse(args); err != nil {
@@ -41,21 +42,28 @@ func (c *AccountsCommand) Run(args []string) int {
 		return 1
 	}
 
-	var accounts []api.Accounts
-	accounts, err = papi.GetAccounts()
-	if err != nil {
+	var vdcs api.VdcArray
+	vdcs, err = papi.GetVdc(c.Meta.accountID, c.Meta.vOrgID)
+
+	if err != nil || len(vdcs.Data) <= 0 {
 		c.UI.Error(
-			"Sorry, there was an error fetching your accounts\n",
+			"Sorry, we have been unable to retrieve your VDCs\n",
 		)
+		if err != nil && len(err.Error()) > 0 {
+			c.UI.Error(
+				err.Error() + "\n",
+			)
+		}
+
 		return 1
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug
 	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
 
-	fmt.Fprintln(w, "ID\tAccount Name\t")
-	for _, account := range accounts {
-		fmt.Fprintln(w, strconv.Itoa(account.ID)+"\t"+account.Name+"\t")
+	fmt.Fprintln(w, "ID\tVDC Name\t")
+	for _, vdc := range vdcs.Data {
+		fmt.Fprintln(w, vdc.ID+"\t"+vdc.Attributes.Name+"\t")
 	}
 	w.Flush()
 
@@ -63,11 +71,15 @@ func (c *AccountsCommand) Run(args []string) int {
 }
 
 // Help is called when ukc accounts -help | --help | -h
-func (c *AccountsCommand) Help() string {
+func (c *VdcCommand) Help() string {
 	helpText := `
-Usage: ukc accounts [options] [path]
+Usage: ukc vdcs [options] [path]
 
   ` + c.Synopsis() + `
+
+Required:
+  -accountid       Your UKCloud AccountID
+  -vorgid          Your UKCloud VorgID
 
 Options:
   -email           Email to your UKCloud Portal Account
@@ -78,6 +90,6 @@ Options:
 }
 
 // Synopsis is used when listing all commands or in the help
-func (c *AccountsCommand) Synopsis() string {
-	return "List the Accounts in your UKCloud Portal"
+func (c *VdcCommand) Synopsis() string {
+	return "List the VDCs in your UKCloud Portal"
 }

@@ -54,6 +54,12 @@ func init() {
 			}, nil
 		},
 
+		"vdcbuild": func() (cli.Command, error) {
+			return &command.VdcBuildCommand{
+				Meta: meta,
+			}, nil
+		},
+
 		"version": func() (cli.Command, error) {
 			return &command.VersionCommand{
 				Meta:              meta,

@@ -33,6 +33,10 @@ type Meta struct {
 	password  string
 	accountID int
 	vOrgID    int
+	create    bool
+	silent    bool
+	buildID   int
+	name      string
 }
 
 // flags adds the meta flags to the given FlagSet.

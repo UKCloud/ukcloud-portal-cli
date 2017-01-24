@@ -27,9 +27,19 @@ func (c *VdcCommand) Run(args []string) int {
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
 	cmdFlags.IntVar(&c.Meta.accountID, "accountid", 0, "accountid")
 	cmdFlags.IntVar(&c.Meta.vOrgID, "vorgid", 0, "vorgid")
+	cmdFlags.BoolVar(&c.Meta.create, "create", false, "create")
+	cmdFlags.BoolVar(&c.Meta.silent, "silent", true, "silent")
+	cmdFlags.StringVar(&c.Meta.name, "name", "", "name")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
-	if err = cmdFlags.Parse(args); err != nil {
+	err = cmdFlags.Parse(args)
+	if c.Meta.accountID == 0 || c.Meta.vOrgID == 0 || err != nil {
+		cmdFlags.Usage()
+		return 1
+	}
+
+	if c.Meta.create == true && c.Meta.name == "" {
+		cmdFlags.Usage()
 		return 1
 	}
 
@@ -40,6 +50,28 @@ func (c *VdcCommand) Run(args []string) int {
 			"Sorry, we have been unable to authenticate your credentials\n",
 		)
 		return 1
+	}
+
+	if c.Meta.create == true {
+		var loc, err = papi.CreateVdc(c.Meta.accountID, c.Meta.vOrgID, c.Meta.name)
+
+		if err != nil && len(err.Error()) > 0 {
+			c.UI.Error(
+				err.Error() + "\n",
+			)
+		}
+
+		if c.Meta.silent == true {
+			c.UI.Info(
+				"VDC now building. You may check the progress here:" + "\n",
+			)
+			c.UI.Info(
+				loc + "\n",
+			)
+			return 0
+		}
+
+		// @TODO - add non-silent flag to keep polling build status
 	}
 
 	var vdcs api.VdcArray
@@ -78,13 +110,19 @@ Usage: ukc vdcs [options] [path]
   ` + c.Synopsis() + `
 
 Required:
-  -accountid       Your UKCloud AccountID
-  -vorgid          Your UKCloud VorgID
+  -accountid     Your UKCloud AccountID
+  -vorgid        Your UKCloud VorgID
 
 Options:
-  -email           Email to your UKCloud Portal Account
+  -email         Email to your UKCloud Portal Account
 
-  -password        Password to your UKCloud Portal Acccount
+  -password      Password to your UKCloud Portal Acccount
+
+  -create        Create a VDC
+
+  -name          Required if -create provided. Name of the VDC to create
+
+  -silent        Creates the request for a VDC but does not wait for completion
 `
 	return strings.TrimSpace(helpText)
 }

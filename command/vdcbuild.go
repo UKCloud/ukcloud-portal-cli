@@ -8,28 +8,28 @@ import (
 	"text/tabwriter"
 )
 
-// VorgsCommand is the command to list UKC Vorgs
-type VorgsCommand struct {
+// VdcBuildCommand is the command to list UKC Vdcs
+type VdcBuildCommand struct {
 	Meta
 }
 
 // Run is will be executed when `ukc accounts` is called
-func (c *VorgsCommand) Run(args []string) int {
+func (c *VdcBuildCommand) Run(args []string) int {
 
 	var err error
 	papi := new(api.API)
 	args = c.Meta.process(args, false)
 
 	// Get the flags for this)
-	cmdName := "vorgs"
+	cmdName := "vdcs"
 	cmdFlags := c.Meta.flagSet(cmdName)
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
-	cmdFlags.IntVar(&c.Meta.accountID, "accountid", 0, "accountid")
+	cmdFlags.IntVar(&c.Meta.buildID, "buildid", 0, "buildid")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	err = cmdFlags.Parse(args)
-	if c.Meta.accountID == 0 || err != nil {
+	if c.Meta.buildID == 0 || err != nil {
 		cmdFlags.Usage()
 		return 1
 	}
@@ -43,12 +43,12 @@ func (c *VorgsCommand) Run(args []string) int {
 		return 1
 	}
 
-	var vorgs api.VorgsArray
-	vorgs, err = papi.GetVorgs(c.Meta.accountID)
+	var vdcb api.VdcBuildData
+	vdcb, err = papi.GetVdcBuild(c.Meta.buildID)
 
-	if err != nil || len(vorgs.Data) <= 0 {
+	if err != nil {
 		c.UI.Error(
-			"Sorry, we have been unable to retrieve your Vorgs\n",
+			"Sorry, we have been unable to retrieve your VDCs\n",
 		)
 		if err != nil && len(err.Error()) > 0 {
 			c.UI.Error(
@@ -56,37 +56,29 @@ func (c *VorgsCommand) Run(args []string) int {
 			)
 		}
 
-		c.UI.Error(
-			"Possible accounts are:\n",
-		)
-
-		acc := new(AccountsCommand)
-		acc.Run(args)
-
 		return 1
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug
 	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
 
-	fmt.Fprintln(w, "ID\tVorgs Name\t")
-	for _, vorgs := range vorgs.Data {
-		fmt.Fprintln(w, vorgs.ID+"\t"+vorgs.Attributes.Name+"\t")
-	}
+	fmt.Fprintln(w, "ID\tCreated At\tCreated By\tStatus\t")
+	fmt.Fprintln(w, vdcb.Data.ID+"\t"+vdcb.Data.Attributes.CreatedAt+"\t"+vdcb.Data.Attributes.CreatedBy+"\t"+vdcb.Data.Attributes.State+"\t")
+
 	w.Flush()
 
 	return 0
 }
 
 // Help is called when ukc accounts -help | --help | -h
-func (c *VorgsCommand) Help() string {
+func (c *VdcBuildCommand) Help() string {
 	helpText := `
-Usage: ukc vorgs [options] [path]
+Usage: ukc vdcbuild [options] [path]
 
   ` + c.Synopsis() + `
 
 Required:
-  -accountid       Your UKCloud AccountID
+  -buildid       The BuildID you wish to check
 
 Options:
   -email           Email to your UKCloud Portal Account
@@ -97,6 +89,6 @@ Options:
 }
 
 // Synopsis is used when listing all commands or in the help
-func (c *VorgsCommand) Synopsis() string {
-	return "List the Vorgs in your UKCloud Portal"
+func (c *VdcBuildCommand) Synopsis() string {
+	return "Gives the status of a VDC Build"
 }

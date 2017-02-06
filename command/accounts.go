@@ -1,6 +1,7 @@
 package command
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/ukcloud/ukcloud-portal-api/api"
 	"os"
@@ -26,6 +27,7 @@ func (c *AccountsCommand) Run(args []string) int {
 	cmdFlags := c.Meta.flagSet(cmdName)
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
+	cmdFlags.BoolVar(&c.Meta.Json, "json", false, "json")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	if err = cmdFlags.Parse(args); err != nil {
@@ -48,6 +50,12 @@ func (c *AccountsCommand) Run(args []string) int {
 			"Sorry, there was an error fetching your accounts\n",
 		)
 		return 1
+	}
+
+	if c.Meta.Json {
+		output, _ := json.Marshal(accounts)
+		fmt.Println(string(output))
+		return 0
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug

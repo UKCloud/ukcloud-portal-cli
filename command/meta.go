@@ -37,6 +37,7 @@ type Meta struct {
 	silent    bool
 	buildID   int
 	name      string
+	Json      bool
 }
 
 // flags adds the meta flags to the given FlagSet.

@@ -1,8 +1,10 @@
 package command
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/ukcloud/ukcloud-portal-api/api"
+	"github.com/ukcloud/ukcloud-portal-cli/ukc"
 	"os"
 	"strings"
 	"text/tabwriter"
@@ -26,13 +28,9 @@ func (c *VorgsCommand) Run(args []string) int {
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
 	cmdFlags.IntVar(&c.Meta.accountID, "accountid", 0, "accountid")
-
+	cmdFlags.BoolVar(&c.Meta.Json, "json", false, "json")
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	err = cmdFlags.Parse(args)
-	if c.Meta.accountID == 0 || err != nil {
-		cmdFlags.Usage()
-		return 1
-	}
 
 	var authorised bool
 	authorised, err = papi.GetAuth(c.Meta.email, c.Meta.password)
@@ -41,6 +39,15 @@ func (c *VorgsCommand) Run(args []string) int {
 			"Sorry, we have been unable to authenticate your credentials\n",
 		)
 		return 1
+	}
+
+	if c.Meta.accountID == 0 || err != nil {
+		c.UI.Error(
+			"Possible accounts are:",
+		)
+
+		c.Meta.accountID = ukc.PromptAccount(papi)
+
 	}
 
 	var vorgs api.VorgsArray
@@ -56,14 +63,13 @@ func (c *VorgsCommand) Run(args []string) int {
 			)
 		}
 
-		c.UI.Error(
-			"Possible accounts are:\n",
-		)
-
-		acc := new(AccountsCommand)
-		acc.Run(args)
-
 		return 1
+	}
+
+	if c.Meta.Json {
+		output, _ := json.Marshal(vorgs.Data)
+		fmt.Println(string(output))
+		return 0
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug

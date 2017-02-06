@@ -1,6 +1,7 @@
 package command
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/ukcloud/ukcloud-portal-api/api"
 	"os"
@@ -26,6 +27,7 @@ func (c *VdcBuildCommand) Run(args []string) int {
 	cmdFlags.StringVar(&c.Meta.email, "email", "", "email")
 	cmdFlags.StringVar(&c.Meta.password, "password", "", "password")
 	cmdFlags.IntVar(&c.Meta.buildID, "buildid", 0, "buildid")
+	cmdFlags.BoolVar(&c.Meta.Json, "json", false, "json")
 
 	cmdFlags.Usage = func() { c.UI.Error(c.Help()) }
 	err = cmdFlags.Parse(args)
@@ -57,6 +59,12 @@ func (c *VdcBuildCommand) Run(args []string) int {
 		}
 
 		return 1
+	}
+
+	if c.Meta.Json {
+		output, _ := json.Marshal(vdcb.Data)
+		fmt.Println(string(output))
+		return 0
 	}
 
 	flags := tabwriter.AlignRight | tabwriter.Debug

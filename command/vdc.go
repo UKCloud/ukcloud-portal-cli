@@ -102,7 +102,7 @@ func (c *VdcCommand) Run(args []string) int {
 
 		status := ""
 		prevStatus := ""
-		for status != "completed" {
+		for {
 
 			vdcb, err = papi.GetVdcBuild(buildID)
 
@@ -120,7 +120,7 @@ func (c *VdcCommand) Run(args []string) int {
 			}
 
 			status = vdcb.Data.Attributes.State
-			if status == "completed" {
+			if status == "completed" || status == "failed" {
 				break
 			}
 

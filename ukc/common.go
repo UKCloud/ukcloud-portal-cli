@@ -93,6 +93,83 @@ func PromptVorg(papi *api.API, accountID int) int {
 	return int(VorgID)
 }
 
+func PromptAccountVorg(creds *api.APICredsCollection) (string, string) {
+	var err error
+
+	flags := tabwriter.AlignRight | tabwriter.Debug
+	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
+
+	fmt.Fprintln(w, "ID\tVorgs Name\t")
+	firstVorg := ""
+	for id, vorgs := range creds.Creds {
+		vOrgId := vorgs.Username
+		vOrgName := strings.Split(id, "(")
+
+		fmt.Fprintln(w, vOrgId+"\t"+vOrgName[0]+"\t")
+
+		if firstVorg == "" {
+			firstVorg = vOrgId
+		}
+
+	}
+	w.Flush()
+
+	fmt.Printf("Please enter VorgID [%v]:", firstVorg)
+
+	reader := bufio.NewReader(os.Stdin)
+
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	response = strings.ToLower(strings.TrimSpace(response))
+
+	if response == "" {
+		response = firstVorg
+	}
+
+	vOrgData := strings.Split(response, "@")
+
+	return vOrgData[0], vOrgData[1]
+}
+
+func PromptVdc(papi *api.API, accountId int, orgId int) string {
+	var vdcs api.VdcArray
+	vdcs, err := papi.GetVdc(accountId, orgId)
+
+	flags := tabwriter.AlignRight | tabwriter.Debug
+	w := tabwriter.NewWriter(os.Stderr, 0, 0, 1, ' ', flags)
+
+	fmt.Fprintln(w, "VDC Name\t")
+	firstVdc := ""
+	for _, vdc := range vdcs.Data {
+		fmt.Fprintln(w, strings.Trim(vdc.Attributes.Name, "\n")+"\t")
+
+		if firstVdc == "" {
+			firstVdc = vdc.Attributes.Name
+		}
+	}
+	w.Flush()
+
+	fmt.Printf("Please enter VDC [%v]:", firstVdc)
+
+	reader := bufio.NewReader(os.Stdin)
+	response, err := reader.ReadString('\n')
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	response = strings.ToLower(strings.TrimSpace(response))
+
+	if response == "" {
+		response = firstVdc
+	}
+
+	return response
+
+}
+
 func PromptVdcName(papi *api.API) string {
 	reader := bufio.NewReader(os.Stdin)
 

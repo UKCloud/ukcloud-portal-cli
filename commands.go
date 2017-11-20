@@ -54,6 +54,24 @@ func init() {
 			}, nil
 		},
 
+		"vapps": func() (cli.Command, error) {
+			return &command.VappCommand{
+				Meta: meta,
+			}, nil
+		},
+
+		"vapps shutdown": func() (cli.Command, error) {
+			return &command.VappShutdownCommand{
+				Meta: meta,
+			}, nil
+		},
+
+		"vapps boot": func() (cli.Command, error) {
+			return &command.VappBootCommand{
+				Meta: meta,
+			}, nil
+		},
+
 		"vdcbuild": func() (cli.Command, error) {
 			return &command.VdcBuildCommand{
 				Meta: meta,

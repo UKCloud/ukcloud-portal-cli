@@ -33,6 +33,10 @@ type Meta struct {
 	password  string
 	accountID int
 	vOrgID    int
+	vOrg      string
+	vdc       string
+	vappName  string
+	username  string
 	create    bool
 	silent    bool
 	buildID   int

@@ -1,10 +1,9 @@
 package main
 
 import (
-	"os"
-
-	"github.com/mitchellh/cli"
 	"github.com/UKCloud/ukcloud-portal-cli/command"
+	"github.com/mitchellh/cli"
+	"os"
 )
 
 // Commands is the mapping of all the available commands.

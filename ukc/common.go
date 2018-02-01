@@ -3,7 +3,7 @@ package ukc
 import (
 	"bufio"
 	"fmt"
-	"github.com/ukcloud/ukcloud-portal-api/api"
+	"github.com/UKCloud/ukcloud-portal-api/api"
 	"log"
 	"os"
 	"strconv"

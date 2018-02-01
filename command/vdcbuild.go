@@ -3,7 +3,7 @@ package command
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ukcloud/ukcloud-portal-api/api"
+	"github.com/UKCloud/ukcloud-portal-api/api"
 	"os"
 	"strings"
 	"text/tabwriter"

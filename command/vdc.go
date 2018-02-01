@@ -3,8 +3,8 @@ package command
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/ukcloud/ukcloud-portal-api/api"
-	"github.com/ukcloud/ukcloud-portal-cli/ukc"
+	"github.com/UKCloud/ukcloud-portal-api/api"
+	"github.com/UKCloud/ukcloud-portal-cli/ukc"
 	"os"
 	"strconv"
 	"strings"

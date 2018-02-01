@@ -4,7 +4,7 @@ import (
 	"os"
 
 	"github.com/mitchellh/cli"
-	"github.com/ukcloud/ukcloud-portal-cli/command"
+	"github.com/UKCloud/ukcloud-portal-cli/command"
 )
 
 // Commands is the mapping of all the available commands.

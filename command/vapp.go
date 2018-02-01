@@ -1,12 +1,12 @@
 package command
 
 import (
-	govcd "github.com/ukcloud/govcloudair"
+	govcd "github.com/UKCloud/govcloudair"
 
 	"bufio"
 	"fmt"
-	"github.com/ukcloud/ukcloud-portal-api/api"
-	"github.com/ukcloud/ukcloud-portal-cli/ukc"
+	"github.com/UKCloud/ukcloud-portal-api/api"
+	"github.com/UKCloud/ukcloud-portal-cli/ukc"
 	"log"
 	"os"
 	"strconv"
